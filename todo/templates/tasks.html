@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Tasks - TaskFlow Pro{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1><i class="fas fa-tasks"></i> Task Management</h1>
+        <button class="btn" onclick="document.getElementById('new-task-form').style.display='block'">
+            <i class="fas fa-plus"></i> New Task
+        </button>
+    </div>
+</div>
+
+<div id="new-task-form" style="display: none;" class="card">
+    <h3>Create New Task</h3>
+    <form method="POST" action="{{ url_for('tasks.create_task') }}">>
+        <div class="form-group">
+            <label>Task Title:</label>
+            <input type="text" name="title" class="form-control" placeholder="Enter task title..." required>
+        </div>
+        <div class="form-group">
+            <label>Description:</label>
+            <textarea name="description" class="form-control" rows="3" placeholder="Describe your task..."></textarea>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label>Priority:</label>
+                <select name="priority" class="form-control">
+                    <option value="Low">Low</option>
+                    <option value="Medium" selected>Medium</option>
+                    <option value="High">High</option>
+                    <option value="Critical">Critical</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Category:</label>
+                <input type="text" name="category" class="form-control" placeholder="Work, Personal, etc.">
+            </div>
+        </div>
+        <button type="submit" class="btn">Create Task</button>
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('new-task-form').style.display='none'">Cancel</button>
+    </form>
+</div>
+
+<div class="grid">
+    {% for task in user_tasks %}
+    <div class="card" style="{% if task.completed %}opacity: 0.7;{% endif %}">
+        <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div style="flex: 1;">
+                <h4>{{ task.title }}</h4>
+                <p>{{ task.description }}</p>
+                <small><i class="fas fa-calendar"></i> {{ task.created_at }}</small>
+                {% if task.category %}
+                <span class="badge badge-info">#{{ task.category }}</span>
+                {% endif %}
+            </div>
+            <div>
+                {% if task.priority == 'Critical' %}
+                <span class="badge badge-danger">{{ task.priority }}</span>
+                {% elif task.priority == 'High' %}
+                <span class="badge badge-warning">{{ task.priority }}</span>
+                {% else %}
+                <span class="badge badge-success">{{ task.priority }}</span>
+                {% endif %}
+            </div>
+        </div>
+        <div style="margin-top: 1rem;">
+            {% if not task.completed %}
+            <form method="POST" action="{{ url_for('tasks.complete_task') }}" style="display: inline;">>
+                <input type="hidden" name="task_id" value="{{ task.id }}">
+                <button type="submit" class="btn" style="font-size: 0.8rem; padding: 0.5rem 1rem;">
+                    <i class="fas fa-check"></i> Complete
+                </button>
+            </form>
+            {% else %}
+            <span class="badge badge-success"><i class="fas fa-check"></i> Completed</span>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    
+    {% if not user_tasks %}
+    <div class="card" style="text-align: center; grid-column: 1 / -1;">
+        <i class="fas fa-clipboard-list" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
+        <h3>No tasks yet</h3>
+        <p>Create your first task to get started with TaskFlow Pro!</p>
+        <button class="btn" onclick="document.getElementById('new-task-form').style.display='block'">
+            <i class="fas fa-plus"></i> Create First Task
+        </button>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

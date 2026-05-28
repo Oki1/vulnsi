@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Authentication Logs</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .navbar { margin-bottom: 20px; }
+        .navbar a { margin-right: 15px; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/auth_logs">Auth Logs</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <h1>Authentication Logs</h1>
+    
+    {% if logs %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>IP Address</th>
+                    <th>Path</th>
+                    <th>Track ID</th>
+                    <th>Headers</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.timestamp }}</td>
+                    <td>{{ log.ip }}</td>
+                    <td>{{ log.path }}</td>
+                    <td>{{ log.track_id if log.track_id else 'None' }}</td>
+                    <td>
+                        <pre>{{ log.headers }}</pre>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No authentication logs found.</p>
+    {% endif %}
+</body>
+</html>

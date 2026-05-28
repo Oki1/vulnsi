@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Company Directory</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        input[type="text"] {
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        input[type="submit"] {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        p {
+            text-align: center;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Company Directory</h1>
+        <p>If you need to reach out to any of our staff, you can find their contact information below</p>
+        <form method="GET">
+            <input type="text" name="first_name" placeholder="First Name" value="{{ search_query.first_name }}">
+            <input type="text" name="last_name" placeholder="Last Name" value="{{ search_query.last_name }}">
+            <input type="text" name="department" placeholder="Department" value="{{ search_query.department }}">
+            <input type="submit" value="Search" formaction="">
+            <input type="submit" value="Export" formaction="export">
+        </form>
+        {% if items %}
+            <table>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Department</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                </tr>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.first_name }}</td>
+                        <td>{{ item.last_name }}</td>
+                        <td>{{ item.department }}</td>
+                        <td>{{ item.phone_number }}</td>
+                        <td>{{ item.email }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+        <p>Only the first 10 results are shown. Use "Export" to get more rows in CSV format</p>
+    </div>
+</body>
+</html>

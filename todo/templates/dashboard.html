@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - TaskFlow Pro{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1><i class="fas fa-tachometer-alt"></i> Welcome to TaskFlow Pro</h1>
+    <p class="lead">Your enterprise task management solution</p>
+</div>
+
+<div class="stats-grid">
+    {% for key, value in analytics.items() %}
+    <div class="stat-card">
+        <div class="stat-value">{{ value }}</div>
+        <div class="stat-label">{{ key.replace('_', ' ').title() }}</div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="grid">
+    <div class="card">
+        <h3><i class="fas fa-tasks"></i> Recent Tasks</h3>
+        {% if recent_tasks %}
+            {% for task in recent_tasks[:5] %}
+            <div style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">
+                <strong>{{ task.title }}</strong>
+                <span class="badge badge-{{ 'success' if task.completed else 'warning' }}">
+                    {{ 'Completed' if task.completed else 'Pending' }}
+                </span>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No tasks yet. <a href="{{ url_for('tasks.tasks') }}">Create your first task</a></p>
+        {% endif %}
+    </div>
+    
+    <div class="card">
+        <h3><i class="fas fa-bell"></i> Notifications</h3>
+        <div style="padding: 0.5rem 0;">
+            <i class="fas fa-info-circle"></i> Welcome to TaskFlow Pro!
+        </div>
+        <div style="padding: 0.5rem 0;">
+            <i class="fas fa-star"></i> Explore advanced features in Settings
+        </div>
+        {% if app_config.feature_flags.advanced_analytics %}
+        <div style="padding: 0.5rem 0;">
+            <i class="fas fa-chart-line"></i> Advanced Analytics enabled
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

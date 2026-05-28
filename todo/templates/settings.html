@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - TaskFlow Pro{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1><i class="fas fa-cog"></i> Settings & Preferences</h1>
+    <p>Customize your TaskFlow Pro experience</p>
+</div>
+
+<div class="settings-grid">
+    <div class="settings-nav">
+        <h3>Settings Categories</h3>
+        <ul>
+            <li><a href="#general" class="settings-link active" data-section="general">
+                <i class="fas fa-user-cog"></i> General
+            </a></li>
+            <li><a href="#advanced" class="settings-link" data-section="advanced">
+                <i class="fas fa-code"></i> Advanced
+            </a></li>
+        </ul>
+    </div>
+    
+    <div class="settings-content">
+        <div id="general" class="settings-section active">
+            <div class="card">
+                <h3><i class="fas fa-user-cog"></i> General Settings</h3>
+                <form method="POST" action="{{ url_for('settings.update_settings') }}">>
+                    <input type="hidden" name="section" value="general">
+                    <div class="form-group">
+                        <label>Display Name:</label>
+                        <input type="text" name="display_name" class="form-control" 
+                               value="{{ current_profile.get('display_name', 'User') }}" placeholder="Your display name">
+                    </div>
+                    <button type="submit" class="btn">Save General Settings</button>
+                </form>
+            </div>
+        </div>
+        
+        <div id="advanced" class="settings-section">
+            <div class="card">
+                <h3><i class="fas fa-code"></i> Advanced Configuration</h3>
+                <p>Configure your personal preferences and application behavior</p>
+                
+                <div class="config-section">
+                    <h4><i class="fas fa-user-cog"></i> User Preferences</h4>
+                    <div class="config-row">
+                        <label>Theme Mode</label>
+                        <select id="theme_mode" onchange="updateConfig()">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                            <option value="auto">Auto</option>
+                        </select>
+                    </div>
+                    <div class="config-row">
+                        <label>Dashboard Layout</label>
+                        <select id="dashboard_layout" onchange="updateConfig()">
+                            <option value="standard">Standard</option>
+                            <option value="compact">Compact</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                    </div>
+                    <div class="config-row">
+                        <label>Enable Notifications</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="enable_notifications" checked onchange="updateConfig()">
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    <div class="config-row">
+                        <label>Language</label>
+                        <select id="language" onchange="updateConfig()">
+                            <option value="en">English</option>
+                            <option value="sl">Slovenščina</option>
+                            <option value="de">Deutsch</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h4><i class="fas fa-cogs"></i> Application Features</h4>
+                    <div class="config-row">
+                        <label>Auto-save Tasks</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="auto_save" checked onchange="updateConfig()">
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    <div class="config-row">
+                        <label>Show Task Statistics</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="show_statistics" checked onchange="updateConfig()">
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    <div class="config-row">
+                        <label>Enable Shortcuts</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="enable_shortcuts" onchange="updateConfig()">
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    <div class="config-row">
+                        <label>Task Reminders</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="task_reminders" checked onchange="updateConfig()">
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="config-section">
+                    <h4><i class="fas fa-shield-alt"></i> Privacy & Security</h4>
+                    <div class="config-row">
+                        <label>Session Timeout (minutes)</label>
+                        <select id="session_timeout" onchange="updateConfig()">
+                            <option value="30">30 minutes</option>
+                            <option value="60" selected>1 hour</option>
+                            <option value="120">2 hours</option>
+                            <option value="480">8 hours</option>
+                        </select>
+                    </div>
+                    <div class="config-row">
+                        <label>Remember Login</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="remember_login" onchange="updateConfig()">
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    <div class="config-row">
+                        <label>Data Analytics</label>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="analytics_enabled" checked onchange="updateConfig()">
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="advanced-config-form" method="POST" action="{{ url_for('settings.update_user_profile') }}" style="margin-top: 2rem;">>
+                    <input type="hidden" id="profile_data" name="profile_data" value="{}">
+                    <button type="submit" class="btn">
+                        <i class="fas fa-save"></i> Save Preferences
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="resetConfig()">
+                        <i class="fas fa-undo"></i> Reset to Defaults
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

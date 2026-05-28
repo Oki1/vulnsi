@@ -1,0 +1,12 @@
+from flask import Blueprint, jsonify
+
+health_bp = Blueprint('health', __name__)
+
+@health_bp.route('/health')
+def health_check():
+    return jsonify({
+        'status': 'healthy', 
+        'service': 'taskflow-pro',
+        'version': '3.2.1',
+        'uptime': 'operational'
+    })

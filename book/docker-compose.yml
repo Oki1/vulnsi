@@ -1,0 +1,9 @@
+services:
+  friendy-book:
+    build:
+      context: ./friendy_book
+    image: friendy-book:latest
+    ports:
+      - 5000:5000
+    environment:
+      - DCTF_FLAG=dctf{test_flag}
