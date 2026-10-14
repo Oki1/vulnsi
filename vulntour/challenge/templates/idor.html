@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<h1>Part 3 - Your Profile</h1>
+<p class="muted">Loaded from the profile API.</p>
+<div class="card"><pre id="profile">loading...</pre></div>
+<p><a href="/">Home</a></p>
+<script>
+const currentUserId = {{ current_user_id }};
+fetch('/api/profile', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: currentUserId })
+})
+    .then(response => response.json())
+    .then(profile => {
+        document.getElementById('profile').textContent = JSON.stringify(profile, null, 2);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,23 @@
+services:
+  web:
+    image: registry.vuln.si/dctf26/web/vuln-tour
+    build:
+      context: .
+      platforms: ["linux/amd64"]
+    restart: unless-stopped
+    environment:
+      FLAG: dctf{part1_part2_part3_part4}
+    ports:
+      - "8000:8000"
+
+  bot:
+    image: registry.vuln.si/dctf26/web/vuln-tour:bot
+    build:
+      context: ./bot
+      platforms: ["linux/amd64"]
+    restart: unless-stopped
+    environment:
+      FLAG: dctf{part1_part2_part3_part4}
+      TARGET_URL: http://web:8000
+    depends_on:
+      - web

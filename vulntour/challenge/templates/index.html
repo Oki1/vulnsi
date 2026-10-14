@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Vuln Tour{% endblock %}
+{% block content %}
+<h1>Vuln Tour</h1>
+<p>The flag is split into four parts. Solve every challenge and join the parts in order.</p>
+<ol>
+<li><a href="/sqli">Part 1 - SQL Injection</a></li>
+<li><a href="/xss">Part 2 - Cross-Site Scripting</a></li>
+<li><a href="/idor">Part 3 - Insecure Direct Object Reference</a></li>
+<li><a href="/rce">Part 4 - Remote Code Execution</a></li>
+</ol>
+{% endblock %}

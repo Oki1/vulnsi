@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Ping{% endblock %}
+{% block content %}
+<h1>Part 4 - Ping Tool</h1>
+<form method="post" action="/rce">
+<input name="host" value="{{ host }}" placeholder="127.0.0.1">
+<button type="submit">Ping</button>
+</form>
+<pre>{{ output }}</pre>
+<p><a href="/">Home</a></p>
+{% endblock %}

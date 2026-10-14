@@ -5,14 +5,14 @@ EXPOSE 1337
 RUN export DEBIAN_FRONTEND=noninteractive && \
     dpkg --add-architecture i386 && \
     apt-get -y update && \
-    apt-get -y install socat coreutils libc6:i386 libstdc++6:i386
+    apt-get -y install socat coreutils libc6:i386 libstdc++6:i386 gdbserver
 
 COPY flag.txt /
 COPY app /
+COPY entrypoint.sh /
 
-RUN chmod 555 /app && \
+RUN chmod 555 /entrypoint.sh && \
+    chmod 555 /app && \
     chmod 444 /flag.txt
 
-CMD socat -T 30 \
-    TCP-LISTEN:1337,nodelay,reuseaddr,fork \
-    EXEC:"stdbuf -i0 -o0 -e0 /app"
+CMD ["/entrypoint.sh"]

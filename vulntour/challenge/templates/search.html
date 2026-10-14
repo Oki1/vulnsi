@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}User Search{% endblock %}
+{% block content %}
+<h1>Member Area</h1>
+<p class="muted">Signed in as {{ user }}.</p>
+<h2>User search</h2>
+<form method="get" action="/sqli/search">
+<input name="q" value="{{ query }}" placeholder="search users by name">
+<button type="submit">Search</button>
+</form>
+<p>{{ message }}</p>
+{% for name in results %}<p class="result">{{ name }}</p>{% endfor %}
+<p><a href="/">Home</a></p>
+{% endblock %}

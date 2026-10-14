@@ -1,0 +1,14 @@
+services:
+  challenge:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: debug_container
+    ports:
+      #- "5000:1337" # port for socat
+      - "9090:9090" # port for gdbserver
+      - "5050:5050"
+    stdin_open: true
+    tty: true
+    cap_add:
+      - SYS_PTRACE

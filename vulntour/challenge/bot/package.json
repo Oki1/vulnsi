@@ -1,0 +1,12 @@
+{
+  "name": "vuln-tour-bot",
+  "version": "1.0.0",
+  "description": "Admin bot that visits reported links with the flag cookie",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "puppeteer-core": "^22.0.0"
+  }
+}

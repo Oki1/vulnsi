@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Search{% endblock %}
+{% block content %}
+<h1>Part 2 - Search</h1>
+<form method="get" action="/xss">
+<input name="q" placeholder="search">
+<button type="submit">Search</button>
+</form>
+<p>Results for: {{ query|safe }}</p>
+<h2>Report a link to the admin</h2>
+<p class="muted">An admin will open the link you submit.</p>
+<form method="post" action="/xss/report">
+<input name="url" placeholder="https://.../xss?q=...">
+<button type="submit">Report</button>
+</form>
+<p><a href="/">Home</a></p>
+{% endblock %}
