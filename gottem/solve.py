@@ -1,24 +1,9 @@
-#!/usr/bin/env python3
-
 from pwn import *
-
-exe = ELF("./main_patched")
-libc = ELF("./libc.so.6")
-ld = ELF("./ld-2.43.so")
-
-context.binary = exe
-
-
-def conn():
-    return gdb.debug(exe.path)
+host_binary_path = "main"
+subprocess.run(["docker", "exec", "-u", "root", "debug_container", "bash", "-c", "pkill -9 gdbserver || true"])
+p = remote("127.0.0.1", 5050)   # connecting here spawns /app frozen under gdbserver
+#p = remote("inst-hwykydorn8.tls.vuln.si", 443, ssl=True)   # connecting here spawns /app frozen under gdbserver
+gdb.attach(('127.0.0.1', 9090), exe=host_binary_path, gdbscript='b main')
 
 
-def main():
-    r = conn()
-
-
-    r.interactive()
-
-
-if __name__ == "__main__":
-    main()
+p.interactive()
